@@ -21,9 +21,9 @@ namespace HelloMailKit
             message.To.Add(new MailboxAddress(ToName, ToAddress));
             message.Subject = "Subject";
 
-            message.Body = new TextPart("plain")
+            message.Body = new TextPart("html")
             {
-                Text = "Body"
+                Text = "<h2>Body</h2><br><img src=\"https://avatars2.githubusercontent.com/u/7973560?v=3&s=460\">",
             };
 
             using (var client = new SmtpClient())
@@ -36,7 +36,7 @@ namespace HelloMailKit
                 Console.Write("Port: ");
                 int.TryParse(Console.ReadLine(), out int port);
                 Console.Write("SSL (y/n): ");
-                var ssl = Console.ReadKey().Key == ConsoleKey.Y;
+                var ssl = Console.ReadLine().ToUpper() == "Y";
                 client.Connect(host, port, ssl);
 
                 // Note: since we don't have an OAuth2 token, disable
@@ -44,7 +44,6 @@ namespace HelloMailKit
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
 
                 // Note: only needed if the SMTP server requires authentication
-                Console.WriteLine();
                 Console.Write("Username: ");
                 var username = Console.ReadLine();
                 Console.Write("Password: ");
